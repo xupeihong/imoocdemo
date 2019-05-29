@@ -19,7 +19,7 @@ function App() {
         >
           Learn React
         </a>
-        <Button>提交</Button>
+        <Button type="primary">提交</Button>
       </header>
     </div>
   );
