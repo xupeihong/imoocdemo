@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Col, Row } from "antd";
+import './index.less'
 class Header extends Component {
   componentWillMount() {
     this.setState({
