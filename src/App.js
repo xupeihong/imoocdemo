@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import './demo.less'
+import {Button} from 'antd'
 function App() {
   return (
     <div className="App">
@@ -18,6 +19,7 @@ function App() {
         >
           Learn React
         </a>
+        <Button>提交</Button>
       </header>
     </div>
   );
