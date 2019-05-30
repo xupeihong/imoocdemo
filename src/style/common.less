@@ -1,4 +1,4 @@
-@import './default.less';
+@import "./default.less";
 .container {
   display: flex;
   .nav-left {
@@ -12,10 +12,21 @@
     flex: 1;
     height: calc(100vh);
     width: 85%;
-    background-color:@colorL;
+    background-color: @colorL;
+    overflow: auto;
   }
-  .content{
-      position:relative;
-      padding: 20px;
+  .content {
+    position: relative;
+    padding: 20px;
+  }
+}
+.nofound {
+  span {
+    text-align: center;
+    height: calc(50vh);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: bisque;
   }
 }

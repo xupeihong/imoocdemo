@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MenuConfig from "./../../config/menuConfig";
 import { Menu } from "antd";
 import "./index.less";
+import { NavLink } from "react-router-dom";
 const { SubMenu } = Menu;
 class NavLeft extends Component {
   componentWillMount() {
@@ -22,7 +23,7 @@ class NavLeft extends Component {
       }
       return (
         <Menu.Item title={item.title} key={item.key}>
-          {item.title}
+          <NavLink to={item.key}>{item.title}</NavLink>
         </Menu.Item>
       );
     });
