@@ -13,9 +13,9 @@ export default class Admin extends Component {
               <NavLeft></NavLeft>
           </Col>
           <Col span="21" className='main'>
-            <Header>头</Header>
-            <Row className='content'>内容</Row>
-            <Footer>尾巴</Footer>
+            <Header></Header>
+            <Row className='content'></Row>
+            <Footer></Footer>
           </Col>
         </Row>
       </div>
