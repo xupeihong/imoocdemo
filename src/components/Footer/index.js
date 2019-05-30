@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-
-class Footer extends Component {
+import './index.less'
+export default class Footer extends Component {
     render() {
         return (
-            <div>
-                底部
-            </div>
+            <div className='footer'>
+                版权所有：hongye（推荐使用谷歌浏览器，可以获得更佳操作页面体验） 技术支持：hongye
+             </div>
         );
     }
 }
-
-export default Footer;
