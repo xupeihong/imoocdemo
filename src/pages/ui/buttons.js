@@ -20,14 +20,14 @@ class Buttons extends Component {
   render() {
     return (
       <div>
-        <Card title="基础按钮">
+        <Card title="基础按钮" className='warp'>
           <Button type="primary">imooc</Button>
           <Button>imooc</Button>
           <Button type="dashed">imooc</Button>
           <Button type="danger">imooc</Button>
           <Button disabled>imooc</Button>
         </Card>
-        <Card title="图形按钮">
+        <Card title="图形按钮" className='warp'>
           <Button icon="plus">添加</Button>
           <Button icon="edit">编辑</Button>
           <Button type="dashed" icon="delete">
@@ -39,7 +39,7 @@ class Buttons extends Component {
           </Button>
           <Button icon="download">下载</Button>
         </Card>
-        <Card title="Loading按钮">
+        <Card title="Loading按钮" className='warp'>
           <Button icon="plus" type="primary" loading={this.state.loading}>
             确定
           </Button>
@@ -56,7 +56,7 @@ class Buttons extends Component {
             关闭
           </Button>
         </Card>
-        <Card title="按钮组">
+        <Card title="按钮组" className='warp'>
           <Button.Group size="small">
             <Button type="primary" icon="left">
               返回
@@ -66,7 +66,7 @@ class Buttons extends Component {
             </Button>
           </Button.Group>
         </Card>
-        <Card title="按钮大小">
+        <Card title="按钮大小" className='warp'>
           <Radio.Group>
             <Radio value="small" onChange={this.handerChange.bind(this)}>
               小
