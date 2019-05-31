@@ -9,6 +9,7 @@ import noMatch from './pages/nomatch';
 import Loadings from './pages/ui/loadings'
 import Notification from './pages/ui/notification'
 import Messages from './pages/ui/messages'
+import Tabs from './pages/ui/tabs'
 class IRouter extends Component {
   render() {
     return (
@@ -24,6 +25,7 @@ class IRouter extends Component {
                  <Route path='/admin/ui/loadings' component={Loadings}></Route>
                  <Route path='/admin/ui/Notification' component={Notification}></Route>
                  <Route path='/admin/ui/Messages' component={Messages}></Route>
+                 <Route path='/admin/ui/tabs' component={Tabs}></Route>
                  <Route component={noMatch}></Route>
                  </Switch>
              </Admin>
