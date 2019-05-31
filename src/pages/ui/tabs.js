@@ -3,6 +3,7 @@ import "./ui.less";
 import { Tabs, Card, message, Icon } from "antd";
 const { TabPane } = Tabs;
 class ITabs extends Component {
+  newTabIndex=0;
   componentWillMount() {
     this.newTabIndex = 0;
     const panes = [
@@ -16,7 +17,8 @@ class ITabs extends Component {
       }
     ];
     this.setState({
-      panes
+      panes,
+      activeKey:panes[0].key
     });
   }
   handerCall = key => {
@@ -30,6 +32,7 @@ class ITabs extends Component {
   onEdit = (targetKey, action) => {
     this[action](targetKey);
   };
+//   添加
   add = () => {
     const panes = this.state.panes;
     const activeKey = `newTab${this.newTabIndex++}`;
@@ -40,6 +43,7 @@ class ITabs extends Component {
     });
     this.setState({ panes, activeKey });
   };
+//   移除
   remove = targetKey => {
     let activeKey = this.state.activeKey;
     let lastIndex;
@@ -111,9 +115,8 @@ class ITabs extends Component {
             </TabPane>
           </Tabs>
         </Card>
-        <Card title="关闭标签" className="card-warp">
-          <Tabs
-            defaultActiveKey="1"
+        <Card title="动态标签" className="card-warp">
+          <Tabs            
             onChange={this.handerchange}
             activeKey={this.state.activeKey}
             type="editable-card"
