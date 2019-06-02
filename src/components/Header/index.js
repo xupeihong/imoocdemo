@@ -17,6 +17,14 @@ class Header extends Component {
     }, 1000);
     this.getWeatherAPIData();
   }
+  componentDidMount(){
+    setInterval(() => {
+      let sysTime = Util.formateDate(new Date().getTime());
+      this.setState({
+        sysTime
+      });
+    }, 1000);
+  }
   getWeatherAPIData() {
     let city = "北京";
     axios
