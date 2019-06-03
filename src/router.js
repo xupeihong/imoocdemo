@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch,Redirect } from "react-router-dom";
 import App from "./App";
 import Admin from "./admin";
 import Buttons from "./pages/ui/buttons";
@@ -13,6 +13,7 @@ import Gallery from './pages/ui/gallery'
 import Carousel from './pages/ui/carousel'
 import Login from './pages/form/login'
 import Register from './pages/form/reg'
+import Home from './pages/home'
 class IRouter extends Component {
   render() {
     return (
@@ -20,9 +21,10 @@ class IRouter extends Component {
         <HashRouter>
           <App>
             {/* <Route path="/admin/form/login" component={Login} /> */}
-            <Route path="/admin" render={()=>
+            <Route path="/" render={()=>
              <Admin>
                  <Switch>
+                 <Route path="/home" component={Home} />
                  <Route path='/admin/ui/buttons' component={Buttons}></Route>
                  <Route path='/admin/ui/modals' component={Models}></Route>
                  <Route path='/admin/ui/loadings' component={Loadings}></Route>
@@ -32,13 +34,13 @@ class IRouter extends Component {
                  <Route path='/admin/ui/gallery' component={Gallery}></Route>
                  <Route path='/admin/ui/carousel' component={Carousel}></Route>
                  <Route path='/admin/form/login' component={Login}></Route>
-                 <Route path='/admin/form/reg' component={Register}></Route>
-                 <Route component={noMatch}></Route>
+                 <Route path='/admin/form/reg' component={Register}></Route>   
+                 <Redirect to="/home" />             
+                 <Route component={noMatch}></Route>                 
                  </Switch>
              </Admin>
             }/>
-            <Route path="/order/detail" component={Login} />
-          </App>
+            </App>
         </HashRouter>
       </div>
     );

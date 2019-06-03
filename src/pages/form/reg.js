@@ -17,17 +17,14 @@ import {
 } from "antd";
 import moment from "moment";
 const FormItem = Form.Item;
-const { Option } = Select;
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
+const { Option } = Select
 
 class Reg extends Component {
   state = {
-    loading: false
+    loading: false,
+    imageUrl:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
   };
+//   上传之前判断图片的格式和大小
   beforeUpload = file => {
     const isJPG = file.type === "image/png";
     if (!isJPG) {
@@ -39,9 +36,16 @@ class Reg extends Component {
     }
     return isJPG && isLt2M;
   };
+//   图片转码
+  getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
   handerSubmit = () => {
     let userInfo = this.props.form.getFieldsValue();
     console.log(JSON.stringify(userInfo));
+    console.log(this.state.imageUrl);
     message.success(
       `${userInfo.user} 恭喜你，您通过本次表单组件学习，当前密码为：${
         userInfo.pwd
@@ -55,13 +59,15 @@ class Reg extends Component {
       return;
     }
     if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, imageUrl =>
+      this.getBase64(info.file.originFileObj, imageUrl =>
         this.setState({
-          imageUrl,
+          imageUrl:imageUrl,
           loading: false
         })
       );
+      console.log(info.file.originFileObj);
     }
+    
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -198,7 +204,7 @@ class Reg extends Component {
             <FormItem {...offsetLayout}>
               {getFieldDecorator("userImg")(
                 <Checkbox>
-                  我已阅读过<a href="#">安全协议</a>
+                  我已阅读过<a href="javascript:;">安全协议</a>
                 </Checkbox>
               )}
             </FormItem>
