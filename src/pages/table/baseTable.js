@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import { Card, Table } from "antd";
+import { Card, Table, Modal, Button, message } from "antd";
 import axios from "./../../axios/index";
 import Item from "antd/lib/list/Item";
-import Utils from './../../utils/utils';
+import Utils from "./../../utils/utils";
 class BaseTable extends Component {
   state = {};
   params = {
-    page:1
-}
+    page: 1
+  };
   componentDidMount() {
     const dataSource = [
       {
-        id: 0,
+        id: 1,
         userName: "夏明",
         sex: 2,
         state: 1,
@@ -20,7 +20,7 @@ class BaseTable extends Component {
         address: "北京市朝阳区望京SOHO"
       },
       {
-        id: 1,
+        id: 2,
         userName: "夏1明",
         sex: 1,
         state: 1,
@@ -29,6 +29,9 @@ class BaseTable extends Component {
         address: "北京市朝阳区望京SOHO"
       }
     ];
+    dataSource.map((itme, index) => {
+      itme.key = index;
+    });
     this.setState({
       dataSource
     });
@@ -45,13 +48,13 @@ class BaseTable extends Component {
       })
       .then(res => {
         if (res.code == 0) {
-          // res.result.map((itme, index) => {
-          //   itme.key = index;
-          // });
+          res.result.map((itme, index) => {
+            itme.key = index;
+          });
           this.setState({
             dataSource2: res.result,
             selectedRowKeys: [],
-            selectedRows: null,
+            selectedRows: null
             // pagination: Utils.pagination(res, current => {
             //   _this.params.page = current;
             //   this.request();
@@ -59,6 +62,40 @@ class BaseTable extends Component {
           });
         }
       });
+  };
+  // 选中行进行操作
+  onRowClick = (record, index) => {
+    let selectKey = [index];
+    this.setState({
+      selectedRowKeys: selectKey,
+      selectedItem: record
+    });
+    Modal.info({
+      title: "信息",
+      content: record.userName
+    });
+  };
+  // 删除表格数据
+  handerDelete = () => {
+    let rows = this.state.selectedRows;
+    let ids = [];
+    console.log(rows);
+    if (rows != null) {
+      rows.map(item => {
+        ids.push(item.id);
+      });
+    } else {
+      return rows;
+    }
+    Modal.confirm({
+      title: "删除提示",
+      content: "确认要删除吗？",
+      onOk: () => {
+        message.success("删除成功");
+        this.request();
+      },
+      onCancel: () => {}
+    });
   };
   render() {
     const columns = [
@@ -124,7 +161,25 @@ class BaseTable extends Component {
         dataIndex: "address"
       }
     ];
-
+    const { selectedRowKeys } = this.state;
+    const rowSelection = {
+      type: "radio",
+      selectedRowKeys
+    };
+    const rowCheckSelection = {
+      type: "checkbox",
+      selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+        let ids = [];
+        selectedRows.map(item => {
+          ids.push(item.id);
+        });
+        this.setState({
+          selectedRowKeys,
+          selectedRows
+        });
+      }
+    };
     return (
       <div>
         <Card title="基础表格">
@@ -137,6 +192,39 @@ class BaseTable extends Component {
         <Card title="动态表格数据渲染" style={{ margin: "10px 0" }}>
           <Table
             columns={columns}
+            bordered
+            dataSource={this.state.dataSource2}
+          />
+        </Card>
+        <Card title="单选" style={{ margin: "10px 0" }}>
+          <Table
+            columns={columns}
+            rowSelection={rowSelection}
+            onRow={(record, index) => {
+              return {
+                onClick: () => {
+                  this.onRowClick(record, index);
+                }
+              };
+            }}
+            bordered
+            dataSource={this.state.dataSource2}
+          />
+        </Card>
+        <Card title="多选框" style={{ margin: "10px 0" }}>
+          <div style={{ marginBottom: 10 }}>
+            <Button onClick={this.handerDelete}>删除</Button>
+          </div>
+          <Table
+            columns={columns}
+            rowSelection={rowCheckSelection}
+            onRow={(record, index) => {
+              return {
+                onClick: () => {
+                  this.onRowClick(record, index);
+                }
+              };
+            }}
             bordered
             dataSource={this.state.dataSource2}
           />
