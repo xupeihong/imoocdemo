@@ -45,9 +45,9 @@ class BaseTable extends Component {
       })
       .then(res => {
         if (res.code == 0) {
-          res.result.map((itme, index) => {
-            itme.key = index;
-          });
+          // res.result.map((itme, index) => {
+          //   itme.key = index;
+          // });
           this.setState({
             dataSource2: res.result,
             selectedRowKeys: [],
