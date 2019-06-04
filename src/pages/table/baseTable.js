@@ -48,17 +48,17 @@ class BaseTable extends Component {
       })
       .then(res => {
         if (res.code == 0) {
-          res.result.map((itme, index) => {
+          res.result.list.map((itme, index) => {
             itme.key = index;
           });
           this.setState({
-            dataSource2: res.result,
+            dataSource2: res.result.list,
             selectedRowKeys: [],
-            selectedRows: null
-            // pagination: Utils.pagination(res, current => {
-            //   _this.params.page = current;
-            //   this.request();
-            // })
+            selectedRows: null,
+            pagination: Utils.pagination(res, current => {
+              _this.params.page = current;
+              this.request();
+            })
           });
         }
       });
@@ -73,6 +73,14 @@ class BaseTable extends Component {
     Modal.info({
       title: "信息",
       content: record.userName
+    });
+  };
+  // 多选框选中行
+  onRowCheckClick = (record, index) => {
+    let selectKey = [index];
+    this.setState({
+      selectedRowKeys: selectKey,
+      selectedItem: record
     });
   };
   // 删除表格数据
@@ -221,12 +229,20 @@ class BaseTable extends Component {
             onRow={(record, index) => {
               return {
                 onClick: () => {
-                  this.onRowClick(record, index);
+                  this.onRowCheckClick(record, index);
                 }
               };
             }}
             bordered
             dataSource={this.state.dataSource2}
+          />
+        </Card>
+        <Card title="表格分页" style={{ margin: "10px 0" }}>          
+          <Table
+            columns={columns}           
+            bordered
+            dataSource={this.state.dataSource2}
+            pagination={this.state.pagination}
           />
         </Card>
       </div>
