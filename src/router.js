@@ -14,13 +14,15 @@ import Carousel from './pages/ui/carousel'
 import Login from './pages/form/login'
 import Register from './pages/form/reg'
 import Home from './pages/home'
+import BaseTable from './pages/table/baseTable'
+import HighTable from './pages/table/highTable'
 class IRouter extends Component {
   render() {
     return (
       <div>
         <HashRouter>
           <App>
-            {/* <Route path="/admin/form/login" component={Login} /> */}
+            
             <Route path="/" render={()=>
              <Admin>
                  <Switch>
@@ -34,8 +36,10 @@ class IRouter extends Component {
                  <Route path='/admin/ui/gallery' component={Gallery}></Route>
                  <Route path='/admin/ui/carousel' component={Carousel}></Route>
                  <Route path='/admin/form/login' component={Login}></Route>
-                 <Route path='/admin/form/reg' component={Register}></Route>   
-                 <Redirect to="/home" />             
+                 <Route path='/admin/form/reg' component={Register}></Route>  
+                 <Route path='/admin/table/basic' component={BaseTable}></Route> 
+                 <Route path='/admin/table/high' component={HighTable}></Route>   
+                 <Redirect to="/home" />         
                  <Route component={noMatch}></Route>                 
                  </Switch>
              </Admin>
