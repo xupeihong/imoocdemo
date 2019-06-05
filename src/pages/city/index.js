@@ -18,6 +18,7 @@ export default class City extends Component {
       isShowOpenCity: true
     });
   };
+  // 提交数据
   handerSubmit = () => {
     let cityInfo = this.cityForm.props.form.getFieldsValue();
     axios
@@ -34,12 +35,15 @@ export default class City extends Component {
             isShowOpenCity: false
           });
           this.requestList();
+          // 清空历史数据
+          this.cityForm.props.form.resetFields();
         }
       });
   };
   componentDidMount() {
     this.requestList();
   }
+  // 请求表格数据
   requestList = () => {
     let _this = this;
     axios
