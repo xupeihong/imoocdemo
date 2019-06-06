@@ -25,7 +25,7 @@ export default class Axios {
       loading=document.getElementById('ajaxLoading');
       loading.style.display='block';
     }
-    let bassApi='https://www.easy-mock.com/mock/5cf4d41a54a36e06b21d2051/mockapi/'
+    let bassApi='https://www.easy-mock.com/mock/5a7278e28d0c633b9c4adbd7/api'
     return new Promise((resolve,reject)=>{
        axios({
          url:option.url,
