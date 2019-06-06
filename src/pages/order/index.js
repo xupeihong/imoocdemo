@@ -51,6 +51,14 @@ export default class Order extends Component {
     this.requestList();
   }
   handerFinsh = () => {
+    console.log(this.state.selectedItem);
+    if (!this.state.selectedItem) {
+      Modal.info({
+        title: "信息",
+        content: "请选择一条订单进行结束"
+      });
+      return;
+    }
     axios
       .ajax({
         url: "/order/ebike_info",
@@ -59,8 +67,8 @@ export default class Order extends Component {
       .then(res => {
         if (res.code == 0) {
           this.setState({
-            orderVisible: true,
-            orderInfo: res.result
+            orderVisible: true
+            // orderInfo: res.result
           });
         }
       });
@@ -78,13 +86,31 @@ export default class Order extends Component {
         if (res.code == 0) {
           message.success("订单结束成功！");
           this.setState({
-            orderVisible: false
+            orderVisible: false,
+            selectedItem: null,
+            selectedRowKeys: []
           });
           this.requestList();
         }
       });
   };
+  // 选中行进行操作
+  onRowClick = (record, index) => {
+    console.log(record);
+    let selectKey = [index];
+    this.setState({
+      selectedRowKeys: selectKey,
+      selectedItem: record,
+      orderInfo: {
+        bike_sn: record.bike_sn,
+        battery: record.key,
+        start_time: record.start_time,
+        location: record.user_name
+      }
+    });
+  };
   render() {
+    const { selectedRowKeys } = this.state;
     const columns = [
       {
         title: "订单编号",
@@ -104,11 +130,17 @@ export default class Order extends Component {
       },
       {
         title: "里程",
-        dataIndex: "distance"
+        dataIndex: "distance",
+        render(distance){
+       return distance/1000+'KM';
+        }
       },
       {
         title: "行驶时长",
-        dataIndex: "total_time"
+        dataIndex: "total_time",
+        render(total_time){
+          return total_time
+        }
       },
       {
         title: "状态",
@@ -140,6 +172,10 @@ export default class Order extends Component {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
     };
+    const rowSelection = {
+      type: "radio",
+      selectedRowKeys
+    };
     return (
       <div>
         <Card>
@@ -157,6 +193,14 @@ export default class Order extends Component {
             bordered
             dataSource={this.state.list}
             pagination={this.state.pagination}
+            rowSelection={rowSelection}
+            onRow={(record, index) => {
+              return {
+                onClick: () => {
+                  this.onRowClick(record, index);
+                }
+              };
+            }}
           />
         </div>
         <Modal

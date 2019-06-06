@@ -48,6 +48,7 @@ class IRouter extends Component {
                  </Switch>
              </Admin>
             }/>
+            <Route path="/order/detail" component={Login}></Route>
             </App>
         </HashRouter>
       </div>
