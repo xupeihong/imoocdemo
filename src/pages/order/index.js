@@ -109,6 +109,17 @@ export default class Order extends Component {
       }
     });
   };
+  // 跳转订单详情页面
+  openDetail=()=>{
+    if (!this.state.selectedItem) {
+      Modal.info({
+        title: "信息",
+        content: "请选择一条订单"
+      });
+      return;
+    }
+ window.open(`/#/common/order/detail/${this.state.selectedItem.id}`,'_blank')
+  }
   render() {
     const { selectedRowKeys } = this.state;
     const columns = [
@@ -182,7 +193,7 @@ export default class Order extends Component {
           <FilterForm />
         </Card>
         <Card style={{ marginTop: 10 }}>
-          <Button type="primary">订单详情</Button>
+          <Button type="primary" onClick={this.openDetail}>订单详情</Button>
           <Button type="primary" onClick={this.handerFinsh}>
             结束订单
           </Button>
