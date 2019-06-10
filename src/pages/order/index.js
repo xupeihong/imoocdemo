@@ -1,18 +1,9 @@
 import React, { Component } from "react";
-import {
-  Card,
-  Button,
-  Form,
-  Select,
-  Table,
-  DatePicker,
-  Modal,
-  message
-} from "antd";
+import { Card, Button, Form, Table, Modal, message } from "antd";
 import axios from "./../../axios";
 import Utils from "./../../utils/utils";
+import BaseForm from "../../components/BaseForm";
 const FormItem = Form.Item;
-const Option = Select.Option;
 export default class Order extends Component {
   state = {
     list: [],
@@ -22,34 +13,50 @@ export default class Order extends Component {
   params = {
     page: 1
   };
+  formList = [
+    {
+      type: "SELECT",
+      label: "城市",
+      placeholder: "全部",
+      initialValue: "0",
+      field: "city_id",
+      width: 100,
+      list: [
+        { id: "0", name: "全部" },
+        { id: "1", name: "北京" },
+        { id: "2", name: "武汉" },
+        { id: "3", name: "四川" }
+      ]
+    },
+    {
+      type: "时间查询"
+    },
+    {
+      type: "SELECT",
+      label: "订单状态",
+      placeholder: "全部",
+      field: "order_status",
+      initialValue: "0",
+      width: 100,
+      list: [
+        { id: "0", name: "全部" },
+        { id: "1", name: "进行中" },
+        { id: "2", name: "结束行程" }
+      ]
+    }
+  ];
   // 请求表格数据
   requestList = () => {
     let _this = this;
-    axios
-      .ajax({
-        url: "/order/list",
-        data: {
-          params: {
-            page: this.params.page
-          }
-        }
-      })
-      .then(res => {
-        this.setState({
-          list: res.result.item_list.map((item, index) => {
-            item.key = index;
-            return item;
-          }),
-          pagination: Utils.pagination(res, current => {
-            _this.params.page = current;
-            _this.requestList();
-          })
-        });
-      });
+    axios.requestList(this,'/order/list',this.params)    
   };
   componentDidMount() {
     this.requestList();
   }
+  handerFilter = params => {
+    this.params = params;
+    this.requestList();
+  };
   handerFinsh = () => {
     console.log(this.state.selectedItem);
     if (!this.state.selectedItem) {
@@ -65,7 +72,7 @@ export default class Order extends Component {
         data: { params: 1 }
       })
       .then(res => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.setState({
             orderVisible: true
             // orderInfo: res.result
@@ -83,7 +90,7 @@ export default class Order extends Component {
         }
       })
       .then(res => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           message.success("订单结束成功！");
           this.setState({
             orderVisible: false,
@@ -110,7 +117,7 @@ export default class Order extends Component {
     });
   };
   // 跳转订单详情页面
-  openDetail=()=>{
+  openDetail = () => {
     if (!this.state.selectedItem) {
       Modal.info({
         title: "信息",
@@ -118,8 +125,11 @@ export default class Order extends Component {
       });
       return;
     }
- window.open(`/#/common/order/detail/${this.state.selectedItem.id}`,'_blank')
-  }
+    window.open(
+      `/#/common/order/detail/${this.state.selectedItem.id}`,
+      "_blank"
+    );
+  };
   render() {
     const { selectedRowKeys } = this.state;
     const columns = [
@@ -142,15 +152,15 @@ export default class Order extends Component {
       {
         title: "里程",
         dataIndex: "distance",
-        render(distance){
-       return distance/1000+'KM';
+        render(distance) {
+          return distance / 1000 + "KM";
         }
       },
       {
         title: "行驶时长",
         dataIndex: "total_time",
-        render(total_time){
-          return total_time
+        render(total_time) {
+          return total_time;
         }
       },
       {
@@ -190,10 +200,12 @@ export default class Order extends Component {
     return (
       <div>
         <Card>
-          <FilterForm />
+          <BaseForm formList={this.formList} filterSubmit={this.handerFilter} />
         </Card>
         <Card style={{ marginTop: 10 }}>
-          <Button type="primary" onClick={this.openDetail}>订单详情</Button>
+          <Button type="primary" onClick={this.openDetail}>
+            订单详情
+          </Button>
           <Button type="primary" onClick={this.handerFinsh}>
             结束订单
           </Button>
@@ -244,57 +256,3 @@ export default class Order extends Component {
     );
   }
 }
-
-class FilterForm extends React.Component {
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form layout="inline">
-        <FormItem label="城市">
-          {getFieldDecorator("city_id")(
-            <Select placeholder="全部" style={{ width: 100 }}>
-              <Option value="">全部</Option>
-              <Option value="1">北京市</Option>
-              <Option value="2">武汉市</Option>
-              <Option value="3">长沙市</Option>
-            </Select>
-          )}
-        </FormItem>
-        <FormItem label="订单时间">
-          {getFieldDecorator("start_time")(
-            <DatePicker
-              showTime
-              format="YYYY-MM-DD HH:mm:ss"
-              placeholder="请选择"
-            />
-          )}
-          {getFieldDecorator("end_time")(
-            <DatePicker
-              showTime
-              format="YYYY-MM-DD HH:mm:ss"
-              placeholder="请选择"
-              style={{ marginLeft: 5 }}
-            />
-          )}
-        </FormItem>
-        <FormItem label="订单状态">
-          {getFieldDecorator("status")(
-            <Select placeholder="全部" style={{ width: 100 }}>
-              <Option value="">全部</Option>
-              <Option value="1">进行中</Option>
-              <Option value="2">进行中(临时锁车)</Option>
-              <Option value="3">行程结束</Option>
-            </Select>
-          )}
-        </FormItem>
-        <FormItem>
-          <Button type="primary" style={{ margin: "0 20px" }}>
-            查询
-          </Button>
-          <Button>重置</Button>
-        </FormItem>
-      </Form>
-    );
-  }
-}
-FilterForm = Form.create({})(FilterForm);

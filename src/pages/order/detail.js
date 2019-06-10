@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Card, Form } from "antd";
+import { Card,  } from "antd";
 import axios from "./../../axios";
 import "./detail.less";
-const FormItem = Form.Item;
 class Detail extends Component {
   state = {
     orderInfo: {}
@@ -37,7 +36,9 @@ class Detail extends Component {
     this.map = new window.BMap.Map("orderDetailMap");
     this.map.centerAndZoom("北京", 11);
     this.addMapControl();
+    // 绘制线路
     this.drawBikeMap(result.position_list);
+    // 绘制服务区
     this.drawServiceArea(result.area);
   };
   drawBikeMap = position_list => {

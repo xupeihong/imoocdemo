@@ -27,7 +27,7 @@ class IRouter extends Component {
         <HashRouter>
           <App>
             <Route
-              path="/admin/"
+              path="/admin"
               render={() => (
                 <Admin>
                   <Switch>
