@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Card, Button, Form, Table, Modal, message } from "antd";
+import { Card, Button, Form, Modal, message } from "antd";
 import axios from "./../../axios";
 import Utils from "./../../utils/utils";
 import BaseForm from "../../components/BaseForm";
+import ETable from "../../components/ETable";
 const FormItem = Form.Item;
 export default class Order extends Component {
   state = {
@@ -48,7 +49,7 @@ export default class Order extends Component {
   // 请求表格数据
   requestList = () => {
     let _this = this;
-    axios.requestList(this,'/order/list',this.params)    
+    axios.requestList(_this, "/order/list", this.params);
   };
   componentDidMount() {
     this.requestList();
@@ -58,7 +59,6 @@ export default class Order extends Component {
     this.requestList();
   };
   handerFinsh = () => {
-    console.log(this.state.selectedItem);
     if (!this.state.selectedItem) {
       Modal.info({
         title: "信息",
@@ -72,10 +72,10 @@ export default class Order extends Component {
         data: { params: 1 }
       })
       .then(res => {
-        if (res.code === 0) {
+        if (res.code === "0") {
           this.setState({
-            orderVisible: true
-            // orderInfo: res.result
+            orderVisible: true,
+            orderInfo: res.result
           });
         }
       });
@@ -90,7 +90,7 @@ export default class Order extends Component {
         }
       })
       .then(res => {
-        if (res.code === 0) {
+        if (res.code === "0") {
           message.success("订单结束成功！");
           this.setState({
             orderVisible: false,
@@ -101,21 +101,7 @@ export default class Order extends Component {
         }
       });
   };
-  // 选中行进行操作
-  onRowClick = (record, index) => {
-    console.log(record);
-    let selectKey = [index];
-    this.setState({
-      selectedRowKeys: selectKey,
-      selectedItem: record,
-      orderInfo: {
-        bike_sn: record.bike_sn,
-        battery: record.key,
-        start_time: record.start_time,
-        location: record.user_name
-      }
-    });
-  };
+
   // 跳转订单详情页面
   openDetail = () => {
     if (!this.state.selectedItem) {
@@ -131,7 +117,6 @@ export default class Order extends Component {
     );
   };
   render() {
-    const { selectedRowKeys } = this.state;
     const columns = [
       {
         title: "订单编号",
@@ -193,10 +178,6 @@ export default class Order extends Component {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
     };
-    const rowSelection = {
-      type: "radio",
-      selectedRowKeys
-    };
     return (
       <div>
         <Card>
@@ -211,19 +192,15 @@ export default class Order extends Component {
           </Button>
         </Card>
         <div className="content-wrap">
-          <Table
+          <ETable
             columns={columns}
-            bordered
             dataSource={this.state.list}
             pagination={this.state.pagination}
-            rowSelection={rowSelection}
-            onRow={(record, index) => {
-              return {
-                onClick: () => {
-                  this.onRowClick(record, index);
-                }
-              };
-            }}
+            selectedRowKeys={this.state.selectedRowKeys}
+            updataSelectItem={Utils.updataSelectItem.bind(this)}
+            rowSelection='checkbox'
+            selectedIds={this.state.selectedIds}
+            selectItem={this.state.selectedItem}
           />
         </div>
         <Modal

@@ -54,5 +54,21 @@ export default {
       );
     });
     return options;
+  },
+  // 单选或多选，选中的数据
+  updataSelectItem(keys, items,selectedIds) {
+    if (selectedIds) {
+      this.setState({
+        selectedRowKeys: keys,
+        selectedItem: items,
+        selectedIds
+      });
+    } else {
+      this.setState({
+        selectedRowKeys: keys,
+        selectedItem: items,
+      });
+    }
+    
   }
 };

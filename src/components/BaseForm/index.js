@@ -79,7 +79,16 @@ class FilterForm extends Component {
             </FormItem>
           );
           formItemList.push(CHECKBOX);
-        }
+        }else if(item.type='DATE'){
+          const DATE = (
+            <FormItem label={label} key={"dt" + i}>
+              {getFieldDecorator([field])(
+                <DatePicker></DatePicker>
+              )}
+            </FormItem>
+          );
+          formItemList.push(DATE);
+        }        
       });
     }
     return formItemList;
