@@ -20,7 +20,7 @@ class FilterForm extends Component {
         let label = item.label;
         let field = item.field;
         let initValue = item.initialValue || "";
-        let placeHolder = item.placeHolder;
+        let placeHolder = item.placeholder;
         let width = item.width;
         if (item.type == "时间查询") {
           const begin_time = (
@@ -52,7 +52,7 @@ class FilterForm extends Component {
             <FormItem label={label} key={"i" + i}>
               {getFieldDecorator([field], {
                 initialValue: initValue
-              })(<Input type="text" placeholder={placeHolder} />)}
+              })(<Input type="text" placeholder={placeHolder} style={{ width: width }} />)}
             </FormItem>
           );
           formItemList.push(INPUT);
@@ -83,7 +83,7 @@ class FilterForm extends Component {
           const DATE = (
             <FormItem label={label} key={"dt" + i}>
               {getFieldDecorator([field])(
-                <DatePicker></DatePicker>
+                <DatePicker showTime={true} placeholder={placeHolder}></DatePicker>
               )}
             </FormItem>
           );
