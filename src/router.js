@@ -25,6 +25,7 @@ import BikeMap from './pages/map'
 import Bar from './pages/echarts/bar'
 import Pie from './pages/echarts/pie'
 import Line from './pages/echarts/line'
+import Rich from './pages/rich'
 class IRouter extends Component {
   render() {
     return (
@@ -59,6 +60,7 @@ class IRouter extends Component {
                     <Route path="/admin/charts/bar" component={Bar} />
                     <Route path="/admin/charts/pie" component={Pie} />
                     <Route path="/admin/charts/line" component={Line} />
+                    <Route path="/admin/rich" component={Rich} />
                     <Redirect to="/home" />
                     <Route component={noMatch} />
                   </Switch>
