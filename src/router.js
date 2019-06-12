@@ -21,6 +21,7 @@ import Order from "./pages/order";
 import Common from "./common";
 import Detail from './pages/order/detail'
 import User from './pages/user'
+import BikeMap from './pages/map'
 class IRouter extends Component {
   render() {
     return (
@@ -51,6 +52,7 @@ class IRouter extends Component {
                     <Route path="/admin/city" component={City} />
                     <Route path="/admin/order" component={Order} />
                     <Route path="/admin/user" component={User} />
+                    <Route path="/admin/bikeMap" component={BikeMap} />
                     <Redirect to="/home" />
                     <Route component={noMatch} />
                   </Switch>
