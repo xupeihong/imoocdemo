@@ -245,6 +245,9 @@ class Permission extends Component {
             targetKeys={this.state.targetData}
             mockData={this.state.mockData}
             wrappedComponentRef={inst => (this.userAuthForm = inst)}
+            patchUserInfo={targetKeys => {
+              this.setState({ targetData: targetKeys });
+            }}
           />
         </Modal>
       </div>
@@ -341,7 +344,10 @@ PermEditForm = Form.create()(PermEditForm);
 
 class RoleAuthForm extends React.Component {
   filterOption = (inputValue, option) => option.title.indexOf(inputValue) > -1;
-
+  handleChange = (nextTargetKeys, direction, moveKeys) => {
+    this.props.patchUserInfo(nextTargetKeys);
+    // this.setState({ targetData: nextTargetKeys });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -355,21 +361,22 @@ class RoleAuthForm extends React.Component {
         <FormItem label="角色名称" {...formItemLayout}>
           <Input disabled placeholder={detail_info.role_name} />
         </FormItem>
-        <Transfer
-          dataSource={this.props.mockData}
-          titles={["待选用户", "已选用户"]}
-          showSearch
-          searchPlaceholder="输入用户名"
-          filterOption={this.filterOption}
-          targetKeys={this.props.targetKeys}
-          onChange={this.handleChange}
-          onSearch={this.handleSearch}
-          // selectedKeys={selectedKeys}
-          onChange={this.handleChange}
-          onSelectChange={this.handleSelectChange}
-          onScroll={this.handleScroll}
-          render={item => item.title}
-        />
+        <FormItem label="选择用户" {...formItemLayout}>
+          <Transfer
+            dataSource={this.props.mockData}
+            titles={["待选用户", "已选用户"]}
+            showSearch
+            searchPlaceholder="输入用户名"
+            filterOption={this.filterOption}
+            targetKeys={this.props.targetKeys}
+            onChange={this.handleChange}
+            onSearch={this.handleSearch}
+            // selectedKeys={selectedKeys}
+            onSelectChange={this.handleSelectChange}
+            onScroll={this.handleScroll}
+            render={item => item.title}
+          />
+        </FormItem>
       </Form>
     );
   }
