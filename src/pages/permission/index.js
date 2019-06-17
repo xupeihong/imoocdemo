@@ -141,6 +141,29 @@ class Permission extends Component {
         }
       });
   };
+  // 保存用户授权的数据
+  handerUserSubmit = () => {
+    let data = {};
+    data.user_ids = this.state.targetData;
+    data.role_id = this.state.selectedItem.id;
+    axios
+      .ajax({
+        url: "/role/user_role_edit",
+        data: {
+          params: {
+            ...data
+          }
+        }
+      })
+      .then(res => {
+        if (res) {
+          this.setState({
+            isUserVisible: false
+          });
+          axios.requestList(this, "/role/list", {});
+        }
+      });
+  };
   render() {
     const colums = [
       {
@@ -344,18 +367,15 @@ PermEditForm = Form.create()(PermEditForm);
 
 class RoleAuthForm extends React.Component {
   filterOption = (inputValue, option) => option.title.indexOf(inputValue) > -1;
-  handleChange = (nextTargetKeys, direction, moveKeys) => {
+  handleChange = nextTargetKeys => {
     this.props.patchUserInfo(nextTargetKeys);
-    // this.setState({ targetData: nextTargetKeys });
   };
   render() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 5 },
       wrapperCol: { span: 19 }
     };
     const detail_info = this.props.detailInfo;
-    const menuInfo = this.props.menuInfo;
     return (
       <Form layout="horizontal">
         <FormItem label="角色名称" {...formItemLayout}>
@@ -371,9 +391,6 @@ class RoleAuthForm extends React.Component {
             targetKeys={this.props.targetKeys}
             onChange={this.handleChange}
             onSearch={this.handleSearch}
-            // selectedKeys={selectedKeys}
-            onSelectChange={this.handleSelectChange}
-            onScroll={this.handleScroll}
             render={item => item.title}
           />
         </FormItem>
