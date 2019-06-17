@@ -111,8 +111,9 @@ export default class Order extends Component {
       });
       return;
     }
+    // console.log(this.state.selectedItem[0])
     window.open(
-      `/#/common/order/detail/${this.state.selectedItem.id}`,
+      `/#/common/order/detail/${this.state.selectedItem[0].id}`,
       "_blank"
     );
   };
